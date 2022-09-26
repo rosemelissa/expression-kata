@@ -5,7 +5,29 @@ export type Expression =
     | { op: Operator; a: Expression; b: Expression };
 
 function evaluate(exp: Expression): number {
-    return -1;
+    if (typeof exp === 'number') {
+        return exp
+    }
+    else {
+        const operator = getOperatorFunction(exp.op)
+        return operator(evaluate(exp.a), evaluate(exp.b))
+    }
+}
+
+function getOperatorFunction(op: Operator): (a: number, b: number) => number {
+    if (op === 'add') {
+        return (a: number, b: number) => a + b
+    }
+    if (op === "subtract") {
+        return (a: number, b: number) => a - b
+    }
+    if (op === 'multiply') {
+        return (a: number, b: number) => a * b
+    }
+    else {
+        // assume op === 'divide'
+        return (a: number, b: number) => a / b
+    }
 }
 
 export { evaluate };
